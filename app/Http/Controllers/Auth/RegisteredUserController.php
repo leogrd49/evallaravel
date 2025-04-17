@@ -21,20 +21,6 @@ class RegisteredUserController extends Controller
     {
         return view('auth.register');
     }
-    
-    /**
-     * Create a new user instance.
-     */
-    protected function createUser(array $input)
-    {
-        return User::create([
-            'nom' => $input['nom'],
-            'prenom' => $input['prenom'],
-            'email' => $input['email'],
-            'password' => Hash::make($input['password']),
-            'role' => 'employe',
-        ]);
-    }
 
     /**
      * Handle an incoming registration request.
@@ -62,5 +48,19 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         return redirect(route('dashboard', absolute: false));
+    }
+
+    /**
+     * Create a new user instance.
+     */
+    protected function createUser(array $input)
+    {
+        return User::create([
+            'nom' => $input['nom'],
+            'prenom' => $input['prenom'],
+            'email' => $input['email'],
+            'password' => Hash::make($input['password']),
+            'role' => 'employe',
+        ]);
     }
 }

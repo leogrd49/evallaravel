@@ -8,7 +8,6 @@ use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -25,7 +24,7 @@ class AdminController extends Controller
             // Semaine précédente
             $startDate = $now->copy()->subWeek()->startOfWeek(Carbon::MONDAY);
             $endDate = $now->copy()->subWeek()->endOfWeek(Carbon::SUNDAY);
-        } else if ($weekType === 'next') {
+        } elseif ($weekType === 'next') {
             // Semaine suivante
             $startDate = $now->copy()->addWeek()->startOfWeek(Carbon::MONDAY);
             $endDate = $now->copy()->addWeek()->endOfWeek(Carbon::SUNDAY);
@@ -48,7 +47,7 @@ class AdminController extends Controller
             'endDate' => $endDate,
             'roomStats' => $roomStats,
             'topUsers' => $topUsers,
-            'chartData' => $chartData
+            'chartData' => $chartData,
         ]);
     }
 
@@ -77,7 +76,7 @@ class AdminController extends Controller
 
         return [
             'labels' => $labels,
-            'data' => $data
+            'data' => $data,
         ];
     }
 
@@ -129,7 +128,7 @@ class AdminController extends Controller
             }
         }
 
-        return round(($reservedHours / $totalPossibleHours) * 100, 1);
+        return round($reservedHours / $totalPossibleHours * 100, 1);
     }
 
     /**
@@ -153,34 +152,34 @@ class AdminController extends Controller
 
             // Calculer le nombre total d'heures réservées
             $totalHours = 0;
-                foreach ($reservations as $reservation) {
-                    $debut = Carbon::parse($reservation->heure_debut);
-                    $fin = Carbon::parse($reservation->heure_fin);
+            foreach ($reservations as $reservation) {
+                $debut = Carbon::parse($reservation->heure_debut);
+                $fin = Carbon::parse($reservation->heure_fin);
 
-                    // Ajuster les dates si nécessaire
-                    if ($debut < $startDate) {
-                        $debut = clone $startDate;
-                    }
-                    if ($fin > $endDate) {
-                        $fin = clone $endDate;
-                    }
-
-                    // Calculer directement la différence d'heures sans limiter aux heures ouvrables
-                    // pour prendre en compte toute la durée de la réservation
-                    $totalHours += $debut->floatDiffInHours($fin);
+                // Ajuster les dates si nécessaire
+                if ($debut < $startDate) {
+                    $debut = clone $startDate;
                 }
+                if ($fin > $endDate) {
+                    $fin = clone $endDate;
+                }
+
+                // Calculer directement la différence d'heures sans limiter aux heures ouvrables
+                // pour prendre en compte toute la durée de la réservation
+                $totalHours += $debut->floatDiffInHours($fin);
+            }
 
             // Calculer le taux d'occupation
             $workingDays = $startDate->diffInWeekdays($endDate) + 1;
             $totalPossibleHours = $workingDays * 10; // 10 heures ouvrables par jour
-            $occupancyRate = ($totalPossibleHours > 0) ? round(($totalHours / $totalPossibleHours) * 100, 1) : 0;
+            $occupancyRate = $totalPossibleHours > 0 ? round($totalHours / $totalPossibleHours * 100, 1) : 0;
 
             $stats[] = [
                 'id' => $salle->id,
                 'name' => $salle->nom,
                 'reservationCount' => $reservations->count(),
                 'hoursReserved' => round($totalHours, 1),
-                'occupancyRate' => $occupancyRate
+                'occupancyRate' => $occupancyRate,
             ];
         }
 
@@ -193,15 +192,16 @@ class AdminController extends Controller
     private function getTopUsers($startDate, $endDate)
     {
         $topUsers = User::withCount(['reservations' => function ($query) use ($startDate, $endDate) {
-                $query->where(function ($q) use ($startDate, $endDate) {
-                    $q->whereBetween('heure_debut', [$startDate, $endDate])
-                        ->orWhereBetween('heure_fin', [$startDate, $endDate])
-                        ->orWhere(function ($subq) use ($startDate, $endDate) {
-                            $subq->where('heure_debut', '<=', $startDate)
-                                ->where('heure_fin', '>=', $endDate);
-                        });
-                });
-            }])
+            $query->where(function ($q) use ($startDate, $endDate) {
+                $q->whereBetween('heure_debut', [$startDate, $endDate])
+                    ->orWhereBetween('heure_fin', [$startDate, $endDate])
+                    ->orWhere(function ($subq) use ($startDate, $endDate) {
+                        $subq->where('heure_debut', '<=', $startDate)
+                            ->where('heure_fin', '>=', $endDate);
+                    });
+            });
+        },
+        ])
             ->having('reservations_count', '>', 0)
             ->orderBy('reservations_count', 'desc')
             ->take(5)
@@ -243,7 +243,7 @@ class AdminController extends Controller
                 'id' => $user->id,
                 'name' => $user->prenom . ' ' . $user->nom,
                 'reservationCount' => $reservations->count(),
-                'totalHours' => round($totalHours, 1)
+                'totalHours' => round($totalHours, 1),
             ];
         }
 

@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Reservation;
 use App\Models\Salle;
+use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
-use Carbon\Carbon;
 
 class ReservationController extends Controller
 {
@@ -20,7 +20,7 @@ class ReservationController extends Controller
         $reservations = Reservation::with(['user', 'salle'])
             ->orderBy('heure_debut', 'asc')
             ->get();
-        
+
         return view('reservations.index', compact('reservations'));
     }
 
@@ -33,7 +33,7 @@ class ReservationController extends Controller
             ->where('user_id', Auth::id())
             ->orderBy('heure_debut', 'asc')
             ->get();
-        
+
         return view('reservations.mes-reservations', compact('reservations'));
     }
 
@@ -43,6 +43,7 @@ class ReservationController extends Controller
     public function create(): View
     {
         $salles = Salle::all();
+
         return view('reservations.create', compact('salles'));
     }
 
@@ -107,7 +108,7 @@ class ReservationController extends Controller
         if (Auth::id() !== $reservation->user_id && Auth::user()->role !== 'administrateur') {
             abort(403, 'Accès non autorisé');
         }
-        
+
         $reservation->delete();
 
         return redirect()->route('reservations.mes-reservations')

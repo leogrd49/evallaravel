@@ -36,7 +36,7 @@ class ReservationSeeder extends Seeder
                         ->orWhereBetween('heure_fin', [$heure_debut, $heure_fin])
                         ->orWhere(function ($q) use ($heure_debut, $heure_fin) {
                             $q->where('heure_debut', '<=', $heure_debut)
-                              ->where('heure_fin', '>=', $heure_fin);
+                                ->where('heure_fin', '>=', $heure_fin);
                         });
                 })->exists();
 
