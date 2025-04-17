@@ -2,12 +2,12 @@
 <html lang="en">
  <head>
   <meta charset="UTF-8">
-  <title>Dashboard for /home/vagrant/code/evaluation-laravel/app/Classes/Commun</title>
+  <title>Dashboard for /home/vagrant/code/evaluation-laravel/app/Notifications</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="../../_css/bootstrap.min.css?v=10.1.16" rel="stylesheet" type="text/css">
-  <link href="../../_css/nv.d3.min.css?v=10.1.16" rel="stylesheet" type="text/css">
-  <link href="../../_css/style.css?v=10.1.16" rel="stylesheet" type="text/css">
-  <link href="../../_css/custom.css" rel="stylesheet" type="text/css">
+  <link href="../_css/bootstrap.min.css?v=10.1.16" rel="stylesheet" type="text/css">
+  <link href="../_css/nv.d3.min.css?v=10.1.16" rel="stylesheet" type="text/css">
+  <link href="../_css/style.css?v=10.1.16" rel="stylesheet" type="text/css">
+  <link href="../_css/custom.css" rel="stylesheet" type="text/css">
  </head>
  <body>
   <header>
@@ -16,9 +16,8 @@
      <div class="col-md-12">
       <nav aria-label="breadcrumb">
        <ol class="breadcrumb">
-         <li class="breadcrumb-item"><a href="../../index.html">/home/vagrant/code/evaluation-laravel/app</a></li>
-         <li class="breadcrumb-item"><a href="../index.html">Classes</a></li>
-         <li class="breadcrumb-item"><a href="index.html">Commun</a></li>
+         <li class="breadcrumb-item"><a href="../index.html">/home/vagrant/code/evaluation-laravel/app</a></li>
+         <li class="breadcrumb-item"><a href="index.html">Notifications</a></li>
          <li class="breadcrumb-item active">(Dashboard)</li>
 
        </ol>
@@ -59,8 +58,7 @@
         </tr>
        </thead>
        <tbody>
-       <tr><td><a href="helpers.php.html#320">BreadcrumbItem</a></td><td class="text-right">0%</td></tr>
-       <tr><td><a href="helpers.php.html#336">DateUSGPH</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="WeeklyPlanningNotification.php.html#10">App\Notifications\WeeklyPlanningNotification</a></td><td class="text-right">0%</td></tr>
 
        </tbody>
       </table>
@@ -77,7 +75,6 @@
         </tr>
        </thead>
        <tbody>
-       <tr><td><a href="helpers.php.html#336">DateUSGPH</a></td><td class="text-right">30</td></tr>
 
        </tbody>
       </table>
@@ -115,8 +112,10 @@
         </tr>
        </thead>
        <tbody>
-       <tr><td><a href="helpers.php.html#329"><abbr title="BreadcrumbItem::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
-       <tr><td><a href="helpers.php.html#345"><abbr title="DateUSGPH::getUSGPHYear">getUSGPHYear</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="WeeklyPlanningNotification.php.html#27"><abbr title="App\Notifications\WeeklyPlanningNotification::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="WeeklyPlanningNotification.php.html#38"><abbr title="App\Notifications\WeeklyPlanningNotification::via">via</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="WeeklyPlanningNotification.php.html#49"><abbr title="App\Notifications\WeeklyPlanningNotification::toMail">toMail</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="WeeklyPlanningNotification.php.html#63"><abbr title="App\Notifications\WeeklyPlanningNotification::toArray">toArray</abbr></a></td><td class="text-right">0%</td></tr>
 
        </tbody>
       </table>
@@ -133,7 +132,6 @@
         </tr>
        </thead>
        <tbody>
-       <tr><td><a href="helpers.php.html#345"><abbr title="DateUSGPH::getUSGPHYear">getUSGPHYear</abbr></a></td><td class="text-right">30</td></tr>
 
        </tbody>
       </table>
@@ -147,9 +145,9 @@
     </p>
    </footer>
   </div>
-  <script src="../../_js/jquery.min.js?v=10.1.16" type="text/javascript"></script>
-  <script src="../../_js/d3.min.js?v=10.1.16" type="text/javascript"></script>
-  <script src="../../_js/nv.d3.min.js?v=10.1.16" type="text/javascript"></script>
+  <script src="../_js/jquery.min.js?v=10.1.16" type="text/javascript"></script>
+  <script src="../_js/d3.min.js?v=10.1.16" type="text/javascript"></script>
+  <script src="../_js/nv.d3.min.js?v=10.1.16" type="text/javascript"></script>
   <script type="text/javascript">
 $(document).ready(function() {
   nv.addGraph(function() {
@@ -162,7 +160,7 @@ $(document).ready(function() {
       .yAxis.tickFormat(d3.format('d'));
 
     d3.select('#classCoverageDistribution svg')
-      .datum(getCoverageDistributionData([2,0,0,0,0,0,0,0,0,0,0,1], "Class Coverage"))
+      .datum(getCoverageDistributionData([1,0,0,0,0,0,0,0,0,0,0,0], "Class Coverage"))
       .transition().duration(500).call(chart);
 
     nv.utils.windowResize(chart.update);
@@ -180,7 +178,7 @@ $(document).ready(function() {
       .yAxis.tickFormat(d3.format('d'));
 
     d3.select('#methodCoverageDistribution svg')
-      .datum(getCoverageDistributionData([2,0,0,0,0,0,0,0,0,0,0,1], "Method Coverage"))
+      .datum(getCoverageDistributionData([4,0,0,0,0,0,0,0,0,0,0,0], "Method Coverage"))
       .transition().duration(500).call(chart);
 
     nv.utils.windowResize(chart.update);
@@ -230,7 +228,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Cyclomatic Complexity');
 
     d3.select('#classComplexity svg')
-      .datum(getComplexityData([[100,2,"<a href=\"ExtendBlueprint.php.html#11\">App\\Classes\\Commun\\ExtendBlueprint<\/a>"],[0,1,"<a href=\"helpers.php.html#320\">BreadcrumbItem<\/a>"],[0,5,"<a href=\"helpers.php.html#336\">DateUSGPH<\/a>"]], 'Class Complexity'))
+      .datum(getComplexityData([[0,4,"<a href=\"WeeklyPlanningNotification.php.html#10\">App\\Notifications\\WeeklyPlanningNotification<\/a>"]], 'Class Complexity'))
       .transition()
       .duration(500)
       .call(chart);
@@ -254,7 +252,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Method Complexity');
 
     d3.select('#methodComplexity svg')
-      .datum(getComplexityData([[100,2,"<a href=\"ExtendBlueprint.php.html#20\">App\\Classes\\Commun\\ExtendBlueprint::whoAndWhen<\/a>"],[0,1,"<a href=\"helpers.php.html#329\">BreadcrumbItem::__construct<\/a>"],[0,5,"<a href=\"helpers.php.html#345\">DateUSGPH::getUSGPHYear<\/a>"]], 'Method Complexity'))
+      .datum(getComplexityData([[0,1,"<a href=\"WeeklyPlanningNotification.php.html#27\">App\\Notifications\\WeeklyPlanningNotification::__construct<\/a>"],[0,1,"<a href=\"WeeklyPlanningNotification.php.html#38\">App\\Notifications\\WeeklyPlanningNotification::via<\/a>"],[0,1,"<a href=\"WeeklyPlanningNotification.php.html#49\">App\\Notifications\\WeeklyPlanningNotification::toMail<\/a>"],[0,1,"<a href=\"WeeklyPlanningNotification.php.html#63\">App\\Notifications\\WeeklyPlanningNotification::toArray<\/a>"]], 'Method Complexity'))
       .transition()
       .duration(500)
       .call(chart);
