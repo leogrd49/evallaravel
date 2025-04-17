@@ -50,6 +50,14 @@
                         </form>
                     </x-slot>
                 </x-dropdown>
+
+                <!-- Logout Button -->
+                <form method="POST" action="{{ route('logout') }}" class="ml-3">
+                    @csrf
+                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:bg-red-700 active:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                        {{ __('Déconnexion') }}
+                    </button>
+                </form>
             </div>
 
             <!-- Hamburger -->
@@ -93,6 +101,14 @@
                                         this.closest('form').submit();">
                         {{ __('Log Out') }}
                     </x-responsive-nav-link>
+                </form>
+
+                <!-- Direct Logout Button -->
+                <form method="POST" action="{{ route('logout') }}" class="mt-2 px-4">
+                    @csrf
+                    <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                        {{ __('Déconnexion') }}
+                    </button>
                 </form>
             </div>
         </div>
