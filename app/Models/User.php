@@ -63,10 +63,11 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var list<string>
      */
     protected $fillable = [
-        'first_name',
-        'last_name',
+        'nom',
+        'prenom',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -90,5 +91,15 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === 'administrateur';
+    }
+
+    public function isEmploye()
+    {
+        return $this->role === 'employe';
     }
 }

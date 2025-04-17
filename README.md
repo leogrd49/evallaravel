@@ -81,3 +81,10 @@ Start the Laravel development server:
 
 
 
+# Admin account:
+Email: admin@evallaravel.fr
+Mot de passe: password
+
+# Employé account
+Email: johndoe@evallaravel.fr
+Mot de passe: user
