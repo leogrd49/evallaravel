@@ -28,7 +28,7 @@ Route::middleware('auth')->group(function () {
     // Routes pour le tableau de bord administrateur
     Route::middleware(AdminMiddleware::class)->group(function () {
         Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-        Route::get('/admin/stats', [AdminController::class, 'getStats'])->name('admin.stats');
+        // La route /admin/stats n'est plus nécessaire car les stats sont maintenant directement chargées dans le dashboard
     });
 });
 

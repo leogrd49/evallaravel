@@ -11,26 +11,34 @@
                 <h3 class="text-lg font-semibold mb-4">Taux d'occupation des salles</h3>
 
                 <!-- Sélecteur de période -->
-                <div class="mb-6">
-                    <form id="periodSelectorForm" class="flex items-center space-x-4">
-                        <div>
-                            <label for="periodType" class="block text-sm font-medium text-gray-700">Afficher par:</label>
-                            <select id="periodType" name="periodType" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-                                <option value="week" {{ $periodType == 'week' ? 'selected' : '' }}>Semaine</option>
-                                <option value="month" {{ $periodType == 'month' ? 'selected' : '' }}>Mois</option>
-                            </select>
+                <div class="mb-6 bg-gray-50 p-4 rounded-lg">
+                    <form action="{{ route('admin.dashboard') }}" method="GET" class="">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="weekType" class="block text-sm font-medium text-gray-700 mb-1">Semaine:</label>
+                                <select id="weekType" name="weekType" class="w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md" onchange="this.form.submit()">
+                                    <option value="current" {{ request('weekType', 'current') == 'current' ? 'selected' : '' }}>Semaine courante</option>
+                                    <option value="previous" {{ request('weekType') == 'previous' ? 'selected' : '' }}>Semaine précédente</option>
+                                    <option value="next" {{ request('weekType') == 'next' ? 'selected' : '' }}>Semaine suivante</option>
+                                </select>
+                            </div>
+                            <div class="flex items-end">
+                                <span class="text-sm text-gray-600">{{ $startDate->format('d/m/Y') }} - {{ $endDate->format('d/m/Y') }}</span>
+                            </div>
                         </div>
-                        <div>
-                            <label for="startDate" class="block text-sm font-medium text-gray-700">Date de début:</label>
-                            <input type="date" id="startDate" name="startDate" value="{{ $startDate }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                        </div>
-                        <div class="pt-5">
+
+                        <div class="mt-4 flex justify-end">
                             <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                Actualiser
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                                </svg>
+                                Filtrer
                             </button>
                         </div>
                     </form>
                 </div>
+
+
 
                 <!-- Tableau récapitulatif -->
                 <div class="mb-6">
@@ -40,7 +48,6 @@
                             <thead>
                                 <tr>
                                     <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Salle</th>
-                                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Capacité</th>
                                     <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre de réservations</th>
                                     <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Heures réservées</th>
                                     <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Taux d'occupation</th>
@@ -50,7 +57,6 @@
                                 @foreach($roomStats as $stat)
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $stat['name'] }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $stat['capacity'] }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $stat['reservationCount'] }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $stat['hoursReserved'] }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $stat['occupancyRate'] }}%</td>
@@ -88,109 +94,4 @@
             </div>
         </div>
     </div>
-
-    @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialiser le graphique avec les données pré-chargées
-            const chartData = @json($chartData);
-            updateChart(chartData);
-
-            // Ajouter l'événement de soumission du formulaire
-            document.getElementById('periodSelectorForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                loadData();
-            });
-        });
-
-        function loadData() {
-            const periodType = document.getElementById('periodType').value;
-            const startDate = document.getElementById('startDate').value;
-
-            // Appel AJAX pour récupérer les données
-            fetch(`/admin/stats?periodType=${periodType}&startDate=${startDate}`)
-                .then(response => response.json())
-                .then(data => {
-                    updateChart(data.chartData);
-                    updateStatsTable(data.roomStats);
-                    updateTopUsersTable(data.topUsers);
-                })
-                .catch(error => console.error('Erreur lors du chargement des données:', error));
-        }
-
-        let occupationChart;
-
-        function updateChart(chartData) {
-            const ctx = document.getElementById('occupationChart').getContext('2d');
-
-            // Détruire le graphique existant s'il existe
-            if (occupationChart) {
-                occupationChart.destroy();
-            }
-
-            // Créer un nouveau graphique
-            occupationChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: chartData.labels,
-                    datasets: [{
-                        label: 'Taux d\'occupation (%)',
-                        data: chartData.data,
-                        backgroundColor: 'rgba(59, 130, 246, 0.5)',
-                        borderColor: 'rgb(59, 130, 246)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 100,
-                            ticks: {
-                                callback: function(value) {
-                                    return value + '%';
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        function updateStatsTable(roomStats) {
-            const tableBody = document.getElementById('statsTableBody');
-            tableBody.innerHTML = '';
-
-            roomStats.forEach(stat => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${stat.name}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${stat.capacity}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${stat.reservationCount}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${stat.hoursReserved}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${stat.occupancyRate}%</td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }
-
-        function updateTopUsersTable(topUsers) {
-            const tableBody = document.getElementById('topUsersTableBody');
-            tableBody.innerHTML = '';
-
-            topUsers.forEach(user => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${user.name}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${user.reservationCount}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${user.totalHours}</td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }
-    </script>
-    @endpush
 </x-app-layout>
