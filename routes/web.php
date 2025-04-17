@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -22,6 +24,12 @@ Route::middleware('auth')->group(function () {
     // Routes pour la gestion des réservations
     Route::get('/reservations/mes-reservations', [App\Http\Controllers\ReservationController::class, 'mesReservations'])->name('reservations.mes-reservations');
     Route::resource('reservations', App\Http\Controllers\ReservationController::class);
+    
+    // Routes pour le tableau de bord administrateur
+    Route::middleware(AdminMiddleware::class)->group(function () {
+        Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+        Route::get('/admin/stats', [AdminController::class, 'getStats'])->name('admin.stats');
+    });
 });
 
 require __DIR__.'/auth.php';

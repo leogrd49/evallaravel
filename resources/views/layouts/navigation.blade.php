@@ -24,6 +24,11 @@
                     <x-nav-link :href="route('reservations.mes-reservations')" :active="request()->routeIs('reservations.mes-reservations')">
                         {{ __('Mes réservations') }}
                     </x-nav-link>
+                    @if(Auth::user()->isAdmin())
+                    <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                        {{ __('Tableau de bord admin') }}
+                    </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -96,6 +101,11 @@
             <x-responsive-nav-link :href="route('reservations.mes-reservations')" :active="request()->routeIs('reservations.mes-reservations')">
                 {{ __('Mes réservations') }}
             </x-responsive-nav-link>
+            @if(Auth::user()->isAdmin())
+            <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                {{ __('Tableau de bord admin') }}
+            </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->
