@@ -43,11 +43,13 @@ class RegisteredUserController extends Controller
             'password' => $request->password,
         ]);
 
-        event(new Registered($user));
+        // Désactivation de l'événement Registered pour éviter l'envoi d'email de vérification
+        // event(new Registered($user));
 
-        Auth::login($user);
+        // Auth::login($user);
+        // On ne fait pas d'authentification ici pour éviter la double authentification
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect(route('login', absolute: false))->with('status', 'Votre compte a été créé avec succès. Veuillez vous connecter.');
     }
 
     /**
@@ -64,6 +66,7 @@ class RegisteredUserController extends Controller
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
             'role' => 'employe',
+            'email_verified_at' => now(), // Marquer automatiquement l'email comme vérifié
         ]);
     }
 }
