@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reservation> $reservations
  * @property-read int|null $reservations_count
  *
+ * @method static \Database\Factories\RoomFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Room newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Room newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Room query()
@@ -37,10 +38,10 @@ class Room extends Model
     /**
      * Relation avec les réservations
      * 
-     * @return HasMany<Reservation>
+     * @return HasMany<Reservation, $this>
      */
-    public function reservations(): HasMany
-    {
-        return $this->hasMany(Reservation::class);
+public function reservations(): HasMany
+{
+     return $this->hasMany(Reservation::class);
     }
 }

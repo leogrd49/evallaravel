@@ -59,7 +59,7 @@ class AdminController extends Controller
     /**
      * Préparer les données pour le graphique hebdomadaire
      *
-     * @param Collection $salles
+     * @param \Illuminate\Database\Eloquent\Collection<int, \App\Models\Salle> $salles
      * @param Carbon $startDate
      * @param Carbon $endDate
      * @return array<string, array<int, mixed>>
@@ -93,10 +93,13 @@ class AdminController extends Controller
     /**
      * Calculer le taux d'occupation journalier
      *
-     * @param Collection $salles
+     * @param \Illuminate\Database\Eloquent\Collection<int, \App\Models\Salle> $salles
      * @param Carbon $startDate
      * @param Carbon $endDate
      * @return float
+     */
+    /**
+     * @param \Illuminate\Database\Eloquent\Collection<int, \App\Models\Salle> $salles
      */
     private function calculateDailyOccupancyRate(Collection $salles, Carbon $startDate, Carbon $endDate): float
     {
@@ -112,6 +115,7 @@ class AdminController extends Controller
         $reservedHours = 0;
 
         foreach ($salles as $salle) {
+            /** @var Salle $salle */
             $reservations = Reservation::where('salle_id', $salle->id)
                 ->where(function ($query) use ($startDate, $endDate) {
                     $query->whereBetween('heure_debut', [$startDate, $endDate])
@@ -138,7 +142,7 @@ class AdminController extends Controller
                 // Calculer directement la différence d'heures sans limiter aux heures ouvrables
                 // pour prendre en compte toute la durée de la réservation
                 if ($debut < $fin) {
-                    $reservedHours += $debut->floatDiffInHours($fin);
+                    $reservedHours += $debut->diffInMinutes($fin) / 60.0;
                 }
             }
         }
@@ -149,7 +153,7 @@ class AdminController extends Controller
     /**
      * Calculer les statistiques par salle
      *
-     * @param Collection $salles
+     * @param \Illuminate\Database\Eloquent\Collection<int, \App\Models\Salle> $salles
      * @param Carbon $startDate
      * @param Carbon $endDate
      * @return array<int, array<string, mixed>>
@@ -186,7 +190,7 @@ class AdminController extends Controller
 
                 // Calculer directement la différence d'heures sans limiter aux heures ouvrables
                 // pour prendre en compte toute la durée de la réservation
-                $totalHours += $debut->floatDiffInHours($fin);
+                $totalHours += $debut->diffInMinutes($fin) / 60.0;
             }
 
             // Calculer le taux d'occupation
@@ -234,6 +238,7 @@ class AdminController extends Controller
         $result = [];
 
         foreach ($topUsers as $user) {
+            /** @var User $user */
             $reservations = $user->reservations()
                 ->where(function ($query) use ($startDate, $endDate) {
                     $query->whereBetween('heure_debut', [$startDate, $endDate])
@@ -260,7 +265,7 @@ class AdminController extends Controller
 
                 // Calculer directement la différence d'heures sans limiter aux heures ouvrables
                 // pour prendre en compte toute la durée de la réservation
-                $totalHours += $debut->floatDiffInHours($fin);
+                $totalHours += $debut->diffInMinutes($fin) / 60.0;
             }
 
             $result[] = [

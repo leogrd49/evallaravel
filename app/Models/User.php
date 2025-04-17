@@ -156,11 +156,11 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Récupère les réservations de l'utilisateur.
      * 
-     * @return HasMany<Reservation>
+     * @return HasMany<Reservation, $this>
      */
-    public function reservations(): HasMany
-    {
-        return $this->hasMany(Reservation::class);
+public function reservations(): HasMany
+{
+     return $this->hasMany(Reservation::class);
     }
 
     /**

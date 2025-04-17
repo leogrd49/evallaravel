@@ -41,7 +41,13 @@ class SendWeeklyNotification extends Command
             return;
         }
 
-        Notification::send($admins, new WeeklyPlanningNotification());
+        // Préparer les données hebdomadaires pour la notification
+        $weeklyData = [
+            'date' => now()->format('Y-m-d'),
+            'summary' => 'Résumé hebdomadaire des réservations de salles'
+        ];
+        
+        Notification::send($admins, new WeeklyPlanningNotification($weeklyData));
 
         $this->info('Notification envoyé avec succès.');
     }

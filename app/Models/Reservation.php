@@ -62,7 +62,7 @@ class Reservation extends Model
     /**
      * Récupère l'utilisateur associé à cette réservation.
      * 
-     * @return BelongsTo<User, Reservation>
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {
@@ -72,7 +72,7 @@ class Reservation extends Model
     /**
      * Récupère la salle associée à cette réservation.
      * 
-     * @return BelongsTo<Salle, Reservation>
+     * @return BelongsTo<Salle, $this>
      */
     public function salle(): BelongsTo
     {

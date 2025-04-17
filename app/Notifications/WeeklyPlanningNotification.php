@@ -11,12 +11,17 @@ class WeeklyPlanningNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
+    /**
+     * Données hebdomadaires pour la notification
+     * 
+     * @var array<string, mixed>
+     */
     protected array $weeklyData;
 
     /**
      * Create a new notification instance.
      *
-     * @param array $weeklyData
+     * @param array<string, mixed> $weeklyData
      * @return void
      */
     public function __construct(array $weeklyData)

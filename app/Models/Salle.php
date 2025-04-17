@@ -49,10 +49,10 @@ class Salle extends Model
     /**
      * Récupère les réservations associées à cette salle.
      * 
-     * @return HasMany<Reservation>
+     * @return HasMany<Reservation, $this>
      */
-    public function reservations(): HasMany
-    {
-        return $this->hasMany(Reservation::class);
+public function reservations(): HasMany
+{
+     return $this->hasMany(Reservation::class);
     }
 }
