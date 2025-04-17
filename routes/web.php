@@ -18,6 +18,10 @@ Route::middleware('auth')->group(function () {
     
     // Routes pour la gestion des salles de réunion
     Route::resource('salles', App\Http\Controllers\SalleController::class);
+    
+    // Routes pour la gestion des réservations
+    Route::get('/reservations/mes-reservations', [App\Http\Controllers\ReservationController::class, 'mesReservations'])->name('reservations.mes-reservations');
+    Route::resource('reservations', App\Http\Controllers\ReservationController::class);
 });
 
 require __DIR__.'/auth.php';

@@ -18,6 +18,12 @@
                     <x-nav-link :href="route('salles.index')" :active="request()->routeIs('salles.*')">
                         {{ __('Salles de réunion') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('reservations.index')" :active="request()->routeIs('reservations.index')">
+                        {{ __('Réservations') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('reservations.mes-reservations')" :active="request()->routeIs('reservations.mes-reservations')">
+                        {{ __('Mes réservations') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -83,6 +89,12 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('salles.index')" :active="request()->routeIs('salles.*')">
                 {{ __('Salles de réunion') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('reservations.index')" :active="request()->routeIs('reservations.index')">
+                {{ __('Réservations') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('reservations.mes-reservations')" :active="request()->routeIs('reservations.mes-reservations')">
+                {{ __('Mes réservations') }}
             </x-responsive-nav-link>
         </div>
 
