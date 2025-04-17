@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method userCreation() userCreation(): BelongsTo<User, $this>
  * @method userModification() userModification(): BelongsTo<User, $this>
  * @method userSuppression() userSuppression(): BelongsTo<User, $this>
+ * 
+ * @phpstan-ignore-next-line
  */
 trait WhoActs
 {

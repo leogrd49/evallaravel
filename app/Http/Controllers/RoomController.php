@@ -26,7 +26,7 @@ class RoomController extends Controller
     public function create(): View
     {
         // Vérifie si l'utilisateur est admin
-        if (! Auth::user()->is_admin) {
+        if (!Auth::user()->isAdmin()) {
             abort(403, 'Accès non autorisé');
         }
 
@@ -39,7 +39,7 @@ class RoomController extends Controller
     public function store(Request $request): RedirectResponse
     {
         // Vérifie si l'utilisateur est admin
-        if (! Auth::user()->is_admin) {
+        if (!Auth::user()->isAdmin()) {
             abort(403, 'Accès non autorisé');
         }
 
@@ -70,7 +70,7 @@ class RoomController extends Controller
     public function edit(Room $room): View
     {
         // Vérifie si l'utilisateur est admin
-        if (! Auth::user()->is_admin) {
+        if (!Auth::user()->isAdmin()) {
             abort(403, 'Accès non autorisé');
         }
 
@@ -83,7 +83,7 @@ class RoomController extends Controller
     public function update(Request $request, Room $room): RedirectResponse
     {
         // Vérifie si l'utilisateur est admin
-        if (! Auth::user()->is_admin) {
+        if (!Auth::user()->isAdmin()) {
             abort(403, 'Accès non autorisé');
         }
 
@@ -107,7 +107,7 @@ class RoomController extends Controller
     public function destroy(Room $room): RedirectResponse
     {
         // Vérifie si l'utilisateur est admin
-        if (! Auth::user()->is_admin) {
+        if (!Auth::user()->isAdmin()) {
             abort(403, 'Accès non autorisé');
         }
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
@@ -31,12 +32,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Salle extends Model
 {
+    /** @use HasFactory<\Database\Factories\SalleFactory> */
     use HasFactory;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
         'nom',
@@ -46,8 +48,10 @@ class Salle extends Model
 
     /**
      * Récupère les réservations associées à cette salle.
+     * 
+     * @return HasMany<Reservation>
      */
-    public function reservations()
+    public function reservations(): HasMany
     {
         return $this->hasMany(Reservation::class);
     }

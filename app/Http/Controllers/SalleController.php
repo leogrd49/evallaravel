@@ -26,7 +26,7 @@ class SalleController extends Controller
     public function create(): View
     {
         // Vérifie si l'utilisateur est admin
-        if (! Auth::user()->role === 'administrateur') {
+        if (Auth::user()->role !== 'administrateur') {
             abort(403, 'Accès non autorisé');
         }
 
@@ -39,7 +39,7 @@ class SalleController extends Controller
     public function store(Request $request): RedirectResponse
     {
         // Vérifie si l'utilisateur est admin
-        if (! Auth::user()->role === 'administrateur') {
+        if (Auth::user()->role !== 'administrateur') {
             abort(403, 'Accès non autorisé');
         }
 
@@ -69,7 +69,7 @@ class SalleController extends Controller
     public function edit(Salle $salle): View
     {
         // Vérifie si l'utilisateur est admin
-        if (! Auth::user()->role === 'administrateur') {
+        if (Auth::user()->role !== 'administrateur') {
             abort(403, 'Accès non autorisé');
         }
 
@@ -82,7 +82,7 @@ class SalleController extends Controller
     public function update(Request $request, Salle $salle): RedirectResponse
     {
         // Vérifie si l'utilisateur est admin
-        if (! Auth::user()->role === 'administrateur') {
+        if (Auth::user()->role !== 'administrateur') {
             abort(403, 'Accès non autorisé');
         }
 
@@ -104,7 +104,7 @@ class SalleController extends Controller
     public function destroy(Salle $salle): RedirectResponse
     {
         // Vérifie si l'utilisateur est admin
-        if (! Auth::user()->role === 'administrateur') {
+        if (Auth::user()->role !== 'administrateur') {
             abort(403, 'Accès non autorisé');
         }
 

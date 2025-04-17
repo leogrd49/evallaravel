@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int $id
@@ -33,12 +34,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Reservation extends Model
 {
+    /** @use HasFactory<\Database\Factories\ReservationFactory> */
     use HasFactory;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
         'heure_debut',
@@ -59,16 +61,20 @@ class Reservation extends Model
 
     /**
      * Récupère l'utilisateur associé à cette réservation.
+     * 
+     * @return BelongsTo<User, Reservation>
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
     /**
      * Récupère la salle associée à cette réservation.
+     * 
+     * @return BelongsTo<Salle, Reservation>
      */
-    public function salle()
+    public function salle(): BelongsTo
     {
         return $this->belongsTo(Salle::class);
     }

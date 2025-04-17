@@ -52,8 +52,11 @@ class RegisteredUserController extends Controller
 
     /**
      * Create a new user instance.
+     * 
+     * @param array<string, string> $input
+     * @return User
      */
-    protected function createUser(array $input)
+    protected function createUser(array $input): User
     {
         return User::create([
             'nom' => $input['nom'],

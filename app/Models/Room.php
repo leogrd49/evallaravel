@@ -18,12 +18,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Room extends Model
 {
+    /** @use HasFactory<\Database\Factories\RoomFactory> */
     use HasFactory;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
         'name',
@@ -35,6 +36,8 @@ class Room extends Model
 
     /**
      * Relation avec les réservations
+     * 
+     * @return HasMany<Reservation>
      */
     public function reservations(): HasMany
     {

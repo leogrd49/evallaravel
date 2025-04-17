@@ -8,13 +8,18 @@ use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
+use Illuminate\Database\Eloquent\Collection;
 
 class AdminController extends Controller
 {
     /**
      * Afficher le tableau de bord administrateur
+     *
+     * @param Request $request
+     * @return View
      */
-    public function dashboard(Request $request)
+    public function dashboard(Request $request): View
     {
         $weekType = $request->input('weekType', 'current');
 
@@ -53,8 +58,13 @@ class AdminController extends Controller
 
     /**
      * Préparer les données pour le graphique hebdomadaire
+     *
+     * @param Collection $salles
+     * @param Carbon $startDate
+     * @param Carbon $endDate
+     * @return array<string, array<int, mixed>>
      */
-    private function prepareWeeklyChartData($salles, $startDate, $endDate)
+    private function prepareWeeklyChartData(Collection $salles, Carbon $startDate, Carbon $endDate): array
     {
         $labels = [];
         $data = [];
@@ -82,8 +92,13 @@ class AdminController extends Controller
 
     /**
      * Calculer le taux d'occupation journalier
+     *
+     * @param Collection $salles
+     * @param Carbon $startDate
+     * @param Carbon $endDate
+     * @return float
      */
-    private function calculateDailyOccupancyRate($salles, $startDate, $endDate)
+    private function calculateDailyOccupancyRate(Collection $salles, Carbon $startDate, Carbon $endDate): float
     {
         // Heures ouvrables (8h à 18h = 10 heures par jour)
         $workingHoursPerDay = 10;
@@ -133,8 +148,13 @@ class AdminController extends Controller
 
     /**
      * Calculer les statistiques par salle
+     *
+     * @param Collection $salles
+     * @param Carbon $startDate
+     * @param Carbon $endDate
+     * @return array<int, array<string, mixed>>
      */
-    private function calculateRoomStats($salles, $startDate, $endDate)
+    private function calculateRoomStats(Collection $salles, Carbon $startDate, Carbon $endDate): array
     {
         $stats = [];
 
@@ -188,8 +208,12 @@ class AdminController extends Controller
 
     /**
      * Récupérer les 5 utilisateurs ayant fait le plus de réservations
+     *
+     * @param Carbon $startDate
+     * @param Carbon $endDate
+     * @return array<int, array<string, mixed>>
      */
-    private function getTopUsers($startDate, $endDate)
+    private function getTopUsers(Carbon $startDate, Carbon $endDate): array
     {
         $topUsers = User::withCount(['reservations' => function ($query) use ($startDate, $endDate) {
             $query->where(function ($q) use ($startDate, $endDate) {

@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Traits\Identity;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Silber\Bouncer\Database\HasRolesAndAbilities;
@@ -57,7 +59,7 @@ use Silber\Bouncer\Database\HasRolesAndAbilities;
  *
  * @mixin \Eloquent
  */
-class User extends Authenticatable /* implements MustVerifyEmail */
+class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
@@ -89,52 +91,74 @@ class User extends Authenticatable /* implements MustVerifyEmail */
         'remember_token',
     ];
 
-    public function isAdmin()
+    /**
+     * Check if user is admin
+     * 
+     * @return bool
+     */
+    public function isAdmin(): bool
     {
         return $this->role === 'administrateur';
     }
 
-    public function isEmploye()
+    /**
+     * Check if user is employee
+     * 
+     * @return bool
+     */
+    public function isEmploye(): bool
     {
         return $this->role === 'employe';
     }
 
     /**
      * Get the user's first name (accessor).
+     * 
+     * @return string
      */
-    public function getFirstNameAttribute()
+    public function getFirstNameAttribute(): string
     {
         return $this->prenom;
     }
 
     /**
      * Get the user's last name (accessor).
+     * 
+     * @return string
      */
-    public function getLastNameAttribute()
+    public function getLastNameAttribute(): string
     {
         return $this->nom;
     }
 
     /**
      * Set the user's first name (mutator).
+     * 
+     * @param string $value
+     * @return void
      */
-    public function setFirstNameAttribute($value)
+    public function setFirstNameAttribute(string $value): void
     {
         $this->attributes['prenom'] = $value;
     }
 
     /**
      * Set the user's last name (mutator).
+     * 
+     * @param string $value
+     * @return void
      */
-    public function setLastNameAttribute($value)
+    public function setLastNameAttribute(string $value): void
     {
         $this->attributes['nom'] = $value;
     }
 
     /**
      * Récupère les réservations de l'utilisateur.
+     * 
+     * @return HasMany<Reservation>
      */
-    public function reservations()
+    public function reservations(): HasMany
     {
         return $this->hasMany(Reservation::class);
     }
